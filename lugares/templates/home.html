@@ -2,10 +2,83 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Página Principal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost & Found - Universidad EAFIT</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #f0f4f8, #d9e2ec);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #005f73;
+            padding: 1rem;
+            text-align: center;
+            color: white;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 2rem;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-content {
+            padding: 1.5rem;
+        }
+        .card-title {
+            font-size: 1.4rem;
+            color: #0a9396;
+            margin-bottom: 0.5rem;
+        }
+        .card-description {
+            font-size: 1rem;
+            color: #555;
+        }
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #005f73;
+            color: white;
+            margin-top: 2rem;
+        }
+    </style>
 </head>
 <body>
-    <h1>Bienvenido a L&F - Guía EAFIT</h1>
-    <p>Este es el inicio de la aplicación.</p>
+    <header>
+        <h1>📍 Lost & Found - Universidad EAFIT</h1>
+        <p>Encuentra información de lugares importantes</p>
+    </header>
+
+    <main class="container">
+        {% for lugar in lugares %}
+        <div class="card">
+            <div class="card-content">
+                <h2 class="card-title">{{ lugar.nombre }}</h2>
+                <p class="card-description">{{ lugar.descripcion }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <p style="grid-column: 1/-1; text-align:center;">No hay lugares registrados.</p>
+        {% endfor %}
+    </main>
+
+    <footer>
+        &copy; {{ year|default:2025 }} Lost & Found EAFIT - Proyecto Integrador
+    </footer>
 </body>
 </html>

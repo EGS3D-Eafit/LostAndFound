@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost & Found - Bienvenida</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    {% load static %}
+    <style>
+        body {
+            background: linear-gradient(to right, #1e293b, #334155);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            background-color: #0f172a;
+            padding: 2rem;
+            text-align: center;
+        }
+        .logo {
+            width: 120px;
+            margin-bottom: 1.5rem;
+        }
+        .btn-custom {
+            border-radius: 8px;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <img src="{% static 'lugares/logo.jpeg' %}" alt="Logo" class="logo">
+        <h2 class="mb-3">Bienvenido a Lost & Found</h2>
+        <p class="mb-4">Elige cómo deseas ingresar:</p>
+
+        <a href="{% url 'signup' %}" class="btn btn-success btn-custom w-100">📝 Crear cuenta (Sign Up)</a>
+        <a href="{% url 'login' %}" class="btn btn-primary btn-custom w-100">🔑 Ingresar (Log In)</a>
+        <a href="{% url 'visitor' %}" class="btn btn-secondary btn-custom w-100">👤 Entrar como Visitante</a>
+    </div>
+</body>
+</html>

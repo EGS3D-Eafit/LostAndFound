@@ -1,5 +1,5 @@
 """
-Django settings for LFminimal project.
+Django settings for lostandfound project.
 """
 
 from pathlib import Path
@@ -23,7 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'lugares',   # nuestra app
+    'places',   # nuestra app
 ]
 
 MIDDLEWARE = [
@@ -36,7 +36,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'LFminimal.urls'
+ROOT_URLCONF = 'lostandfound.urls'
 
 TEMPLATES = [
     {
@@ -54,7 +54,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'LFminimal.wsgi.application'
+WSGI_APPLICATION = 'lostandfound.wsgi.application'
 
 
 # ==============================

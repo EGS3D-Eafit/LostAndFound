@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from lugares import views
+from places import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),

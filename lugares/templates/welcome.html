@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Lost & Found - Bienvenida{% endblock %}
+{% block extra_css %}
+<style>
+
+        body {
+            background: linear-gradient(to right, #1e293b, #334155);
+            color: white;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            background-color: #0f172a;
+            padding: 2rem;
+            text-align: center;
+        }
+        .logo {
+            width: 120px;
+            margin-bottom: 1.5rem;
+        }
+        .btn-custom {
+            border-radius: 8px;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+    
+</style>
+{% endblock %}
+{% block content %}
+<div class="card">
+        <img src="{% static 'lugares/logo.jpeg' %}" alt="Logo" class="logo mx-auto d-block">
+        <h2 class="text-white">Bienvenido a Lost & Found</h2>
+        <p class="text-white">Elige cómo deseas ingresar:</p>
+
+        <a href="{% url 'signup' %}" class="btn btn-success btn-custom w-100">📝 Crear cuenta (Sign Up)</a>
+        <a href="{% url 'login' %}" class="btn btn-primary btn-custom w-100">🔑 Ingresar (Log In)</a>
+        <a href="{% url 'visitor' %}" class="btn btn-secondary btn-custom w-100">👤 Entrar como Visitante</a>
+    </div>
+{% endblock %}

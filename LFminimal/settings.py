@@ -1,13 +1,21 @@
+"""
+Django settings for LFminimal project.
+"""
+
 from pathlib import Path
 
+# BASE_DIR = carpeta raíz del proyecto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-secret-key'
-
+SECRET_KEY = 'django-insecure-reemplaza_esto_con_una_llave_segura'
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
+
+# ==============================
+# INSTALLED APPS
+# ==============================
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -15,7 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'lugares',
+    'lugares',   # nuestra app
 ]
 
 MIDDLEWARE = [
@@ -33,7 +41,7 @@ ROOT_URLCONF = 'LFminimal.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'lugares' / 'templates'],
+        'DIRS': [],   # Django buscará templates dentro de cada app
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -48,6 +56,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'LFminimal.wsgi.application'
 
+
+# ==============================
+# DATABASE
+# ==============================
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -55,14 +67,45 @@ DATABASES = {
     }
 }
 
-LANGUAGE_CODE = 'es-co'
 
+# ==============================
+# PASSWORDS
+# ==============================
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
+
+
+# ==============================
+# LANGUAGE & TIMEZONE
+# ==============================
+LANGUAGE_CODE = 'es-es'
 TIME_ZONE = 'America/Bogota'
 
 USE_I18N = True
-
 USE_TZ = True
 
-STATIC_URL = 'static/'
 
+# ==============================
+# STATIC FILES
+# ==============================
+STATIC_URL = '/static/'
+STATICFILES_DIRS = []   # no necesario si usas /app/static/
+STATIC_ROOT = BASE_DIR / "staticfiles"  # solo se usa en producción
+
+
+# ==============================
+# DEFAULT PRIMARY KEY
+# ==============================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

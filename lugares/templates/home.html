@@ -1,84 +1,57 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lost & Found - Universidad EAFIT</title>
-    <style>
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Lost & Found - Inicio{% endblock %}
+{% block extra_css %}
+<style>
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(to right, #f0f4f8, #d9e2ec);
+            font-family: 'Segoe UI', sans-serif;
             margin: 0;
             padding: 0;
         }
         header {
-            background-color: #005f73;
+            background-color: #0f172a;
+            color: white;
             padding: 1rem;
             text-align: center;
-            color: white;
         }
-        h1 {
-            margin: 0;
-            font-size: 2rem;
+        .logo {
+            height: 60px;
         }
         .container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
             padding: 2rem;
         }
         .card {
-            background: white;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            overflow: hidden;
-            transition: transform 0.2s ease-in-out;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        .card-content {
             padding: 1.5rem;
+            margin-bottom: 1rem;
+            background: white;
         }
-        .card-title {
-            font-size: 1.4rem;
-            color: #0a9396;
-            margin-bottom: 0.5rem;
-        }
-        .card-description {
-            font-size: 1rem;
-            color: #555;
-        }
-        footer {
-            text-align: center;
-            padding: 1rem;
-            background-color: #005f73;
-            color: white;
-            margin-top: 2rem;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>📍 Lost & Found - Universidad EAFIT</h1>
-        <p>Encuentra información de lugares importantes</p>
+    
+</style>
+{% endblock %}
+{% block tab_search_active %}active{% endblock %}
+{% block content %}
+<header>
+        <img src="{% static 'lugares/logo.jpeg' %}" alt="Logo" class="logo">
+        <h2>Bienvenido {{ nombre }}</h2>
     </header>
 
-    <main class="container">
-        {% for lugar in lugares %}
-        <div class="card">
-            <div class="card-content">
-                <h2 class="card-title">{{ lugar.nombre }}</h2>
-                <p class="card-description">{{ lugar.descripcion }}</p>
-            </div>
-        </div>
-        {% empty %}
-        <p style="grid-column: 1/-1; text-align:center;">No hay lugares registrados.</p>
-        {% endfor %}
-    </main>
+   <div class="container">
+    <div class="card">
+        <h4>¿A dónde te gustaría ir?</h4>
+        <input type="text" class="form-control mt-2" placeholder="Buscar lugar...">
+    </div>
+    <div class="card text-center">
+        <h5>Mapa</h5>
+        <img src="{% static 'lugares/mapa-EAFIT.jpg' %}" 
+             alt="Mapa de EAFIT" 
+             style="width:100%; height:auto; border-radius:10px;">
+    </div>
+    <a href="#" class="btn btn-primary w-100 mb-2">¿Quieres prender la cámara?</a>
+    <a href="{% url 'logout' %}" class="btn btn-danger w-100 mb-5">Cerrar Sesión</a>
+</div>
 
-    <footer>
-        &copy; {{ year|default:2025 }} Lost & Found EAFIT - Proyecto Integrador
-    </footer>
-</body>
-</html>
+{% endblock %}

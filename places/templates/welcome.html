@@ -5,7 +5,7 @@
 <style>
 
         body {
-            background: linear-gradient(to right, #1e293b, #334155);
+            background: linear-gradient(to right, #11527e, #334155);
             color: white;
         }
         .card {
@@ -29,12 +29,12 @@
 {% endblock %}
 {% block content %}
 <div class="card">
-        <img src="{% static 'lugares/logo.jpeg' %}" alt="Logo" class="logo mx-auto d-block">
+        <img src="{% static 'lugares/logo.png' %}" alt="Logo" class="logo mx-auto d-block">
         <h2 class="text-white">Bienvenido a Lost & Found</h2>
         <p class="text-white">Elige cómo deseas ingresar:</p>
 
-        <a href="{% url 'signup' %}" class="btn btn-success btn-custom w-100">📝 Crear cuenta (Sign Up)</a>
-        <a href="{% url 'login' %}" class="btn btn-primary btn-custom w-100">🔑 Ingresar (Log In)</a>
-        <a href="{% url 'visitor' %}" class="btn btn-secondary btn-custom w-100">👤 Entrar como Visitante</a>
-    </div>
+        <a href="{% url 'signup' %}" class="btn btn-warning btn-custom text-white">Sign Up</a>
+        <a href="{% url 'login' %}" class="btn btn-primary btn-custom">Log In</a>
+        <a href="{% url 'visitor' %}" class="btn btn-secondary btn-custom">Visitor</a>
+</div>
 {% endblock %}

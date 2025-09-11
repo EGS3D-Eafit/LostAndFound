@@ -30,23 +30,23 @@
 {% endblock %}
 {% block content %}
 <div class="card">
-        <img src="{% static 'lugares/logo.jpeg' %}" alt="Logo" class="logo">
-        <h2 class="text-center mb-3">Iniciar Sesión</h2>
+        <img src="{% static 'lugares/logo.png' %}" alt="Logo" class="logo">
+        <h2 class="text-center mb-3 text-white">Iniciar Sesión</h2>
 
         <form method="POST">
             {% csrf_token %}
             <div class="mb-3">
-                <label class="form-label">Usuario</label>
+                <label class="form-label text-white">Usuario</label>
                 <input type="text" name="username" class="form-control" required>
             </div>
             <div class="mb-3">
-                <label class="form-label">Contraseña</label>
+                <label class="form-label text-white">Contraseña</label>
                 <input type="password" name="password" class="form-control" required>
             </div>
-            <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+            <button type="submit" class="btn btn-primary w-100 text-white">Ingresar</button>
         </form>
 
-        <p class="mt-3 text-center">
+        <p class="mt-3 text-center text-white">
             ¿No tienes cuenta? <a href="{% url 'signup' %}" class="text-info">Regístrate</a>
         </p>
     </div>

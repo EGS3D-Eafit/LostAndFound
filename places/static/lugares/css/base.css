@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 /* Base styles for Lost & Found */
 :root{
@@ -94,3 +95,76 @@ body{
 
 /* Asegurarse que la brand se vea centrada en el header */
 .topbar .brand { margin-left: 0; }
+=======
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #0a1b3d, #0055cc);
+  color: white;
+  margin: 0;
+  padding: 0;
+}
+
+.top-bar, .bottom-bar {
+  background-color: #0d0d0d;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.card {
+  background: white;
+  color: #0a1b3d;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+button {
+  background-color: #f4c542;
+  color: #0a1b3d;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #0055cc;
+  color: white;
+}
+
+.btn-custom {
+    width: 100%;
+    border-radius: 10px;
+    font-weight: bold;
+    margin: 10px 0;
+    padding: 12px;
+    transition: all 0.3s ease-in-out; /* transición suave */
+}
+
+/* Hover general */
+.btn-custom:hover {
+    transform: scale(1.05); /* agranda ligeramente */
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3); /* sombra */
+}
+
+/* Hover específico para cada color */
+.btn-warning:hover {
+    background-color: #eab308; /* amarillo más oscuro */
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2563eb; /* azul más intenso */
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #334155; /* gris oscuro */
+    color: white;
+}
+>>>>>>> bcd09d2 (Primer commit Mejora Front End)

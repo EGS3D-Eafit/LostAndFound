@@ -67,3 +67,6 @@ def home(request):
         return redirect("welcome")  # Si no está autenticado, vuelve a welcome
 
     return render(request, "home.html", {"nombre": nombre})
+
+def calendar_view(request):
+    return render(request, 'calendar.html')

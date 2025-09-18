@@ -1,58 +1,248 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Lost & Found - Inicio{% endblock %}
-{% block extra_css %}
-<style>
 
-        body {
-            background: linear-gradient(to right, #f0f4f8, #d9e2ec);
-            font-family: 'Segoe UI', sans-serif;
-            color: white;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #0f172a;
-            color: white;
-            padding: 1rem;
-            text-align: center;
-        }
-        .logo {
-            height: 60px;
-        }
-        .container {
-            padding: 2rem;
-        }
-        .card {
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            background: white;
-        }
-    
+<!-- Agregar CSS de Leaflet en el head -->
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+    #map {
+        height: 400px;
+        width: 100%;
+        border-radius: 10px;
+    }
+    .search-results {
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        max-height: 200px;
+        overflow-y: auto;
+        position: absolute;
+        width: 100%;
+        z-index: 1000;
+        display: none;
+    }
+    .search-item {
+        padding: 10px;
+        cursor: pointer;
+        border-bottom: 1px solid #eee;
+    }
+    .search-item:hover {
+        background-color: #f5f5f5;
+    }
+    .search-container {
+        position: relative;
+    }
 </style>
 {% endblock %}
-{% block tab_search_active %}active{% endblock %}
-{% block content %}
-<header>
-        <img src="{% static 'lugares/logo.png' %}" alt="Logo" class="logo">
-        <h2>Bienvenido {{ nombre }}</h2>
-    </header>
 
-   <div class="container">
-    <div class="card">
-        <h4>¿A dónde te gustaría ir?</h4>
-        <input type="text" class="form-control mt-2" placeholder="Buscar lugar...">
-    </div>
-    <div class="card text-center">
-        <h5>Mapa</h5>
-        <img src="{% static 'lugares/mapa-EAFIT.jpg' %}" 
-             alt="Mapa de EAFIT" 
-             style="width:100%; height:auto; border-radius:10px;">
-    </div>
-    <a href="#" class="btn btn-primary w-100 mb-2">¿Quieres prender la cámara?</a>
-    <a href="{% url 'logout' %}" class="btn btn-danger w-100 mb-5">Cerrar Sesión</a>
+{% block content %}
+<div class="text-center my-4">
+    <img src="{% static 'lugares/logo.png' %}" alt="Logo" style="height: 80px;">
+    <h2 class="mt-2">Bienvenido {{ nombre }}</h2>
 </div>
 
+<div class="container">
+    <div class="card mb-3 p-3">
+        <h4>¿A dónde te gustaría ir?</h4>
+        <div class="search-container">
+            <input type="text" id="searchInput" class="form-control mt-2" placeholder="Buscar lugar en EAFIT...">
+            <div id="searchResults" class="search-results"></div>
+        </div>
+    </div>
+    
+    <div class="card text-center mb-3 p-3">
+        <h5>Mapa Interactivo de EAFIT</h5>
+        <div id="map"></div>
+    </div>
+    
+    <a href="#" class="btn btn-primary w-100 mb-2">¿Quieres prender la cámara?</a>
+    <a href="{% url 'logout' %}" class="btn btn-danger w-100">Cerrar Sesión</a>
+</div>
+{% endblock %}
+
+{% block tab_search_active %}active{% endblock %}
+
+<!-- JavaScript al final del body -->
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+// Coordenadas de EAFIT, Medellín
+const eafitCoords = [6.2009, -75.5781];
+
+// Inicializar el mapa centrado en EAFIT
+var map = L.map('map').setView(eafitCoords, 17);
+
+// Agregar capa de mapa (OpenStreetMap)
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+}).addTo(map);
+
+// Lugares exactos de EAFIT (coordenadas convertidas desde plus codes)
+const lugareseafit = [
+    {
+        nombre: "Bloque 38 - Rectoría",
+        coords: [6.2016, -75.5786],
+        descripcion: "Edificio administrativo principal"
+    },
+    {
+        nombre: "Biblioteca Luis Echavarría Villegas", 
+        coords: [6.2014, -75.5782],
+        descripcion: "Biblioteca principal de la universidad"
+    },
+    {
+        nombre: "Bloque 35",
+        coords: [6.2011, -75.5789],
+        descripcion: "Edificio académico"
+    },
+    {
+        nombre: "Bloque 34",
+        coords: [6.2008, -75.5789],
+        descripcion: "Edificio académico"
+    },
+    {
+        nombre: "Bloque 33",
+        coords: [6.2006, -75.5792],
+        descripcion: "Edificio académico"
+    },
+    {
+        nombre: "Bloque 30",
+        coords: [6.2003, -75.5792],
+        descripcion: "Edificio académico"
+    },
+    {
+        nombre: "Bloque 27",
+        coords: [6.2000, -75.5795],
+        descripcion: "Edificio académico"
+    },
+    {
+        nombre: "Bloque 26 - Administración",
+        coords: [6.1999, -75.5792],
+        descripcion: "Facultad de Administración"
+    },
+    {
+        nombre: "Bloque 19 - Ingeniería", 
+        coords: [6.1986, -75.5797],
+        descripcion: "Facultad de Ingeniería"
+    },
+    {
+        nombre: "Bloque 17",
+        coords: [6.1991, -75.5796],
+        descripcion: "Edificio académico"
+    },
+    {
+        nombre: "Bloque 20",
+        coords: [6.1988, -75.5789],
+        descripcion: "Edificio académico"
+    },
+    {
+        nombre: "Bloque 14",
+        coords: [6.1991, -75.5789],
+        descripcion: "Edificio académico"
+    },
+    {
+        nombre: "Laboratorio del Café",
+        coords: [6.1999, -75.5794],
+        descripcion: "Laboratorio del café EAFIT"
+    },
+    {
+        nombre: "Educación Continua",
+        coords: [6.1994, -75.5794],
+        descripcion: "Centro de educación continua"
+    },
+    {
+        nombre: "Piscina EAFIT - Bloque 4",
+        coords: [6.1997, -75.5785],
+        descripcion: "Centro deportivo - Piscina"
+    },
+    {
+        nombre: "Cancha Sintética",
+        coords: [6.1983, -75.5782],
+        descripcion: "Instalaciones deportivas"
+    },
+    {
+        nombre: "Alta Dirección",
+        coords: [6.1980, -75.5797],
+        descripcion: "Escuela de Alta Dirección"
+    },
+    {
+        nombre: "Departamento Desarrollo Artístico",
+        coords: [6.1978, -75.5792],
+        descripcion: "Departamento de artes"
+    }
+];
+
+// Agregar marcadores para cada lugar
+lugareseafit.forEach(lugar => {
+    L.marker(lugar.coords)
+        .addTo(map)
+        .bindPopup(`<b>${lugar.nombre}</b><br>${lugar.descripcion}`)
+        .on('click', function() {
+            // Al hacer clic en un marcador, centrar el mapa
+            map.setView(lugar.coords, 18);
+        });
+});
+
+// Función de búsqueda
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+
+searchInput.addEventListener('input', function() {
+    const query = this.value.toLowerCase().trim();
+    
+    if (query.length < 2) {
+        searchResults.style.display = 'none';
+        return;
+    }
+    
+    // Filtrar lugares que coincidan con la búsqueda
+    const matches = lugareseafit.filter(lugar => 
+        lugar.nombre.toLowerCase().includes(query) ||
+        lugar.descripcion.toLowerCase().includes(query)
+    );
+    
+    if (matches.length > 0) {
+        searchResults.innerHTML = matches.map(lugar => 
+            `<div class="search-item" onclick="goToPlace(${lugar.coords[0]}, ${lugar.coords[1]}, '${lugar.nombre}')">
+                <strong>${lugar.nombre}</strong><br>
+                <small>${lugar.descripcion}</small>
+            </div>`
+        ).join('');
+        searchResults.style.display = 'block';
+    } else {
+        searchResults.innerHTML = '<div class="search-item">No se encontraron lugares</div>';
+        searchResults.style.display = 'block';
+    }
+});
+
+// Función para ir a un lugar específico
+function goToPlace(lat, lng, nombre) {
+    map.setView([lat, lng], 19);
+    searchResults.style.display = 'none';
+    searchInput.value = nombre;
+    
+    // Mostrar popup del lugar
+    L.popup()
+        .setLatLng([lat, lng])
+        .setContent(`<b>¡Estás aquí!</b><br>${nombre}`)
+        .openOn(map);
+}
+
+// Ocultar resultados al hacer clic fuera
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.search-container')) {
+        searchResults.style.display = 'none';
+    }
+});
+
+// Agregar control de ubicación (si el usuario permite geolocalización)
+map.locate({setView: false, maxZoom: 19});
+
+map.on('locationfound', function(e) {
+    L.marker(e.latlng)
+        .addTo(map)
+        .bindPopup('¡Tu ubicación actual!')
+        .openPopup();
+});
+</script>
 {% endblock %}

@@ -69,3 +69,93 @@ button:hover {
     background-color: #334155; /* gris oscuro */
     color: white;
 }
+
+/* Barra superior */
+/* --- Fuerza topbar y tabbar visibles y posicionadas --- */
+.topbar {
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  background: #0f172a !important;
+  color: #fff !important;
+  padding: 0.5rem 1rem !important;
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  z-index: 9999;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.topbar .brand {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.topbar .brand img {
+  height: 36px !important;
+  width: 36px !important;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* acciones (iconos) */
+.topbar .actions a {
+  color: #fff !important;
+  margin-left: 0.6rem;
+  font-size: 1.05rem;
+  text-decoration: none;
+}
+
+/* Contenedor principal: dejar espacio para topbar y tabbar */
+.container-app {
+  padding-top: 80px !important;    /* espacio para topbar */
+  padding-bottom: 84px !important; /* espacio para tabbar */
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Barra inferior fija y visible */
+.tabbar {
+  display: flex !important;
+  justify-content: space-around;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #ffffff !important;
+  color: #333 !important;
+  padding: 10px 6px;
+  border-top: 1px solid #e6e9ef;
+  z-index: 9999;
+}
+
+/* Items de la barra inferior */
+.tabbar a {
+  flex: 1;
+  text-align: center;
+  color: inherit !important;
+  text-decoration: none;
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+/* icon dentro de tabbar */
+.tabbar .icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* Asegurar que cualquier regla previa no oculte el header/tabbar */
+header.topbar, nav.tabbar { visibility: visible !important; opacity: 1 !important; transform: none !important; }
+
+/* En caso extremo, forzar logo pequeño si hay imágenes enormes */
+img[src*="logo"] { max-height: 48px !important; max-width: 48px !important; }

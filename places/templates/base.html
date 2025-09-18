@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   {% block extra_head %}{% endblock %}
   {% block extra_css %}{% endblock %}
-  
 </head>
 <body>
   <header class="topbar">
@@ -32,8 +31,8 @@
     <a href="{% url 'home' %}" class="{% block tab_search_active %}{% endblock %}">
       <i class="fa-solid fa-magnifying-glass icon"></i><span>Search</span>
     </a>
-    <a href="#" title="Próximamente">
-      <i class="fa-regular fa-calendar-days icon"></i><span>Calendar</span>
+    <a href="{% url 'calendar' %}">
+       <i class="fa-regular fa-calendar-days icon"></i><span>Calendar</span>
     </a>
     <a href="#" title="Próximamente">
       <i class="fa-regular fa-heart icon"></i><span>Saved</span>

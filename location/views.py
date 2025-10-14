@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 
 
+# Quintero, coloca una fokin app nueva para lo relacionado a inicio de sesion, esto NO debe estar el puto location
+
 # Página de bienvenida con opciones: Sign Up / Log In / Visitor
 def welcome(request):
     return render(request, "welcome.html")
@@ -56,7 +58,6 @@ def visitor_login(request):
     request.session["visitor"] = True  # Guarda que es visitante
     return redirect("home")
 
-
 # Página principal (Home)
 def home(request):
     if request.user.is_authenticated:
@@ -70,3 +71,7 @@ def home(request):
 
 def calendar_view(request):
     return render(request, 'calendar.html')
+
+# Esto si debe ir aqui
+
+#

@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Filter - Lost & Found{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* estilos rápidos para la lista */
+  .place-card img { height: 180px; object-fit: cover; }
+  .filter-row { gap: 10px; align-items: end; }
+  .small-muted { font-size: 0.9rem; color: #9aa3b2; }
+</style>
+{% endblock %}
+
+{% block tab_filter_active %}active{% endblock %}
+
+{% block content %}
+<div class="container mt-3">
+  <h2 class="mb-4">Filter places</h2>
+
+  <form method="get" class="row filter-row mb-3">
+    <div class="col-md-4">
+      <label class="form-label text-white">Category</label>
+      <select name="category" class="form-select">
+        <option value="">-- All categories --</option>
+        {% for cat in categories %}
+          <option value="{{ cat }}" {% if cat == selected_category %}selected{% endif %}>{{ cat }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="col-md-4">
+      <label class="form-label text-white">Search</label>
+      <input type="text" name="q" value="{{ q }}" class="form-control" placeholder="Search by name or description">
+    </div>
+
+    <div class="col-md-2">
+      <label class="form-label text-white">Order</label>
+      <select name="order" class="form-select">
+        <option value="recent" {% if selected_order == 'recent' %}selected{% endif %}>Most recent</option>
+        <option value="popular" {% if selected_order == 'popular' %}selected{% endif %}>Most popular</option>
+        <option value="nearby" {% if selected_order == 'nearby' %}selected{% endif %}>Nearby</option>
+      </select>
+    </div>
+
+    <div class="col-md-2">
+      <label class="form-label text-white">Location</label>
+      <div class="d-flex gap-2">
+        <button type="button" id="useLocation" class="btn btn-outline-light btn-sm" title="Use my location">Use my location</button>
+        <input type="hidden" name="lat" id="lat" value="{{ user_lat }}">
+        <input type="hidden" name="lng" id="lng" value="{{ user_lng }}">
+        <button type="submit" class="btn btn-primary btn-sm">Apply</button>
+      </div>
+      <div class="small-muted mt-1">If you pick "Nearby" order, press "Use my location" then "Apply".</div>
+    </div>
+  </form>
+
+  <div class="row">
+    {% if places %}
+      {% for p in places %}
+        <div class="col-md-4 mb-4">
+          <div class="card place-card shadow-sm">
+            <img src="https://via.placeholder.com/600x300.png?text={{ p.title|urlencode }}" class="card-img-top" alt="{{ p.title }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ p.title }}</h5>
+              <p class="card-text">{{ p.description }}</p>
+              <p class="small-muted">Category: {{ p.category }}</p>
+              {% if p.distance_km %}
+                <p class="small-muted">Distance: {{ p.distance_km|floatformat:2 }} km</p>
+              {% endif %}
+              <a href="#" class="btn btn-primary w-100">View details</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="col-12">
+        <div class="alert alert-info">No places found with those filters.</div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  const useLocationBtn = document.getElementById('useLocation');
+  const latInput = document.getElementById('lat');
+  const lngInput = document.getElementById('lng');
+
+  useLocationBtn.addEventListener('click', () => {
+    if (!navigator.geolocation) {
+      alert('Geolocation not supported by your browser');
+      return;
+    }
+    useLocationBtn.innerText = 'Locating...';
+    navigator.geolocation.getCurrentPosition((pos) => {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+      latInput.value = lat;
+      lngInput.value = lng;
+      useLocationBtn.innerText = 'Location set';
+    }, (err) => {
+      alert('Could not get location: ' + err.message);
+      useLocationBtn.innerText = 'Use my location';
+    }, { enableHighAccuracy: true, timeout: 10000 });
+  });
+</script>
+{% endblock %}

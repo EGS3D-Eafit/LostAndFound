@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+  <img src="{% static lugar.imagen %}" class="card-img-top" alt="{{ lugar.nombre }}">
+  <div class="card-body">
+    <h3>{{ lugar.nombre }}</h3>
+    <p>{{ lugar.descripcion }}</p>
+    <a href="{% url 'saved' %}" class="btn btn-secondary">Volver</a>
+  </div>
+</div>
+{% endblock %}

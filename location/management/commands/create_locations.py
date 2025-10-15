@@ -12,37 +12,37 @@ class Command(BaseCommand):
         locations_EAFIT = [
             {
                 "name": "Bloque 38 - Rectoría",
-                "coordinates": [6.2016, -75.5786],
+                "coordinates": [6.2016, -75.5785],
                 "description": "Edificio administrativo principal"
             },
             {
                 "name": "Biblioteca Luis Echavarría Villegas",
-                "coordinates": [6.2014, -75.5782],
+                "coordinates": [6.2011, -75.5784],
                 "description": "Biblioteca principal de la universidad"
             },
             {
                 "name": "Bloque 35",
-                "coordinates": [6.2011, -75.5789],
+                "coordinates": [6.2013, -75.5790],
                 "description": "Edificio académico"
             },
             {
                 "name": "Bloque 34",
-                "coordinates": [6.2008, -75.5789],
+                "coordinates": [6.2011, -75.5790],
                 "description": "Edificio académico"
             },
             {
                 "name": "Bloque 33",
-                "coordinates": [6.2006, -75.5792],
+                "coordinates": [6.2009, -75.5790],
                 "description": "Edificio académico"
             },
             {
                 "name": "Bloque 30",
-                "coordinates": [6.2003, -75.5792],
+                "coordinates": [6.2006, -75.5791],
                 "description": "Edificio académico"
             },
             {
                 "name": "Bloque 27",
-                "coordinates": [6.2000, -75.5795],
+                "coordinates": [6.2003, -75.5791],
                 "description": "Edificio académico"
             },
             {
@@ -99,6 +99,11 @@ class Command(BaseCommand):
                 "name": "Departamento Desarrollo Artístico",
                 "coordinates": [6.1978, -75.5792],
                 "description": "Departamento de artes"
+            },
+            {
+                "name": "Cafeteria Principal",
+                "coordinates": [6.1992, -75.5785],
+                "description": "Cafeteria principal"
             }
         ]
 
@@ -108,15 +113,14 @@ class Command(BaseCommand):
                 try:
                     Location.objects.create(name = location['name'],
                                             description = location['description'],
-                                            location_tensor_img = None,
+                                            location_tensors_imgs = None,
                                             coordinates = location['coordinates'],)
                 except:
                     pass
             else:
                 try:
-                    exist.name = location['name']
                     exist.description = location['description']
-                    exist.location_tensor_img = None
+                    exist.location_tensors_imgs = None
                     exist.coordinates = location['coordinates']
                     exist.save()
                 except:

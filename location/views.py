@@ -1,8 +1,21 @@
+import io
+import torch
+
+from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from datetime import datetime
+from PIL import Image
+
+from location.models import Location
+
+# Aqui va a ir lo relacionado a la conversion de imagenes
+
+import torchvision.transforms as transforms
+from transformers import AutoImageProcessor, AutoModel
+
 import math
 
 
@@ -218,3 +231,64 @@ def saved(request):
 def saved_detail(request, lugar_id):
     lugar = next((l for l in LUGARES if l["id"] == lugar_id), None)
     return render(request, "saved_detail.html", {"lugar": lugar})
+
+def createTensor(img):
+    model_ckpt = "nateraw/vit-base-beans"
+    processor = AutoImageProcessor.from_pretrained(model_ckpt)
+    model = AutoModel.from_pretrained(model_ckpt)
+
+    transform = transforms.Compose([
+        transforms.Resize((224, 224)),  # resize to 224x224
+        transforms.ToTensor(),  # convert to tensor (C x H x W, values in [0,1])
+    ])
+
+    # Apply transform
+    img_tensor = transform(img).unsqueeze(0)
+    embeddings = model(img_tensor).last_hidden_state[:, 0].cpu()
+    return embeddings
+
+def compare_imgs(request):
+    usr_image_file = request.FILES['image']
+    usr_image = Image.open(usr_image_file)
+    usr_image_embedding = createTensor(usr_image)
+    max_coincidence_location = None
+    max_coincidence_location_mean = 0
+    for location in Location.objects.all():
+        buffer = io.BytesIO(location.location_tensors_imgs)
+        location_embs = torch.load(buffer)
+        total = 0.0
+        carry = 0.0
+        for emb in location_embs:
+            usr_emb = usr_image_embedding.unsqueeze(0)
+            loc_emb = emb.unsqueeze(0)
+            cos = torch.nn.functional.cosine_similarity(usr_emb, loc_emb).item()
+            carry += cos
+            total += 1
+        mean = carry / total
+        if mean > max_coincidence_location_mean:
+            max_coincidence_location = location
+            max_coincidence_location_mean = mean
+
+    data = [
+        {
+            'nombre': max_coincidence_location.name,
+            'descripcion': max_coincidence_location.description,
+            'coords': max_coincidence_location.coordinates,
+        }
+    ]
+
+    return JsonResponse(data, safe=False)
+
+
+
+def get_locations_json(request):
+    locations = Location.objects.all()
+    data = [
+        {
+            'nombre': location.name,
+            'descripcion': location.description,
+            'coords': location.coordinates,
+        }
+        for location in locations
+    ]
+    return JsonResponse(data, safe=False)

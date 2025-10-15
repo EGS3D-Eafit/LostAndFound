@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.urls import path
+from django.urls.conf import include
+
 from location import views
 
 urlpatterns = [
@@ -14,5 +16,5 @@ urlpatterns = [
     path('saved/', views.saved_view, name='saved'),
     path('filter/', views.filter_view, name='filter'),
     path("saved/<int:lugar_id>/", views.saved_detail, name="saved_detail"),
-
+    path('location/', include('location.urls')),
 ]

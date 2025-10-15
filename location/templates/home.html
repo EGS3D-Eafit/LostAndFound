@@ -55,8 +55,34 @@
         <h5>Mapa Interactivo de EAFIT</h5>
         <div id="map"></div>
     </div>
-    
-    <a href="#" class="btn btn-primary w-100 mb-2">¿Quieres prender la cámara?</a>
+
+    <!--Aqui empieza para subida de imagenes-->
+    <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <form id="imageForm" enctype="multipart/form-data">
+              {% csrf_token %}
+            <div class="modal-header">
+              <h5 class="modal-title text-dark" id="uploadModalLabel">¡Sube una imagen y te encontramos!</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="imagen" class="form-label">Selecciona una imagen</label>
+                <input class="form-control" type="file" id="imagen" name="imagen" accept="image/*" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn-success">Procesar</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!--Aqui termina-->
+
+    <button href="#" class="btn btn-primary w-100 mb-2" data-bs-toggle="modal" data-bs-target="#uploadModal">¿No sabes dondes estas?</button>
     <a href="{% url 'logout' %}" class="btn btn-danger w-100">Cerrar Sesión</a>
 </div>
 {% endblock %}
@@ -66,183 +92,7 @@
 <!-- JavaScript al final del body -->
 {% block extra_js %}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-// Coordenadas de EAFIT, Medellín
-const eafitCoords = [6.2009, -75.5781];
 
-// Inicializar el mapa centrado en EAFIT
-var map = L.map('map').setView(eafitCoords, 17);
-
-// Agregar capa de mapa (OpenStreetMap)
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors'
-}).addTo(map);
-
-// Lugares exactos de EAFIT (coordenadas convertidas desde plus codes)
-const lugareseafit = [
-    {
-        nombre: "Bloque 38 - Rectoría",
-        coords: [6.2016, -75.5786],
-        descripcion: "Edificio administrativo principal"
-    },
-    {
-        nombre: "Biblioteca Luis Echavarría Villegas", 
-        coords: [6.2014, -75.5782],
-        descripcion: "Biblioteca principal de la universidad"
-    },
-    {
-        nombre: "Bloque 35",
-        coords: [6.2011, -75.5789],
-        descripcion: "Edificio académico"
-    },
-    {
-        nombre: "Bloque 34",
-        coords: [6.2008, -75.5789],
-        descripcion: "Edificio académico"
-    },
-    {
-        nombre: "Bloque 33",
-        coords: [6.2006, -75.5792],
-        descripcion: "Edificio académico"
-    },
-    {
-        nombre: "Bloque 30",
-        coords: [6.2003, -75.5792],
-        descripcion: "Edificio académico"
-    },
-    {
-        nombre: "Bloque 27",
-        coords: [6.2000, -75.5795],
-        descripcion: "Edificio académico"
-    },
-    {
-        nombre: "Bloque 26 - Administración",
-        coords: [6.1999, -75.5792],
-        descripcion: "Facultad de Administración"
-    },
-    {
-        nombre: "Bloque 19 - Ingeniería", 
-        coords: [6.1986, -75.5797],
-        descripcion: "Facultad de Ingeniería"
-    },
-    {
-        nombre: "Bloque 17",
-        coords: [6.1991, -75.5796],
-        descripcion: "Edificio académico"
-    },
-    {
-        nombre: "Bloque 20",
-        coords: [6.1988, -75.5789],
-        descripcion: "Edificio académico"
-    },
-    {
-        nombre: "Bloque 14",
-        coords: [6.1991, -75.5789],
-        descripcion: "Edificio académico"
-    },
-    {
-        nombre: "Laboratorio del Café",
-        coords: [6.1999, -75.5794],
-        descripcion: "Laboratorio del café EAFIT"
-    },
-    {
-        nombre: "Educación Continua",
-        coords: [6.1994, -75.5794],
-        descripcion: "Centro de educación continua"
-    },
-    {
-        nombre: "Piscina EAFIT - Bloque 4",
-        coords: [6.1997, -75.5785],
-        descripcion: "Centro deportivo - Piscina"
-    },
-    {
-        nombre: "Cancha Sintética",
-        coords: [6.1983, -75.5782],
-        descripcion: "Instalaciones deportivas"
-    },
-    {
-        nombre: "Alta Dirección",
-        coords: [6.1980, -75.5797],
-        descripcion: "Escuela de Alta Dirección"
-    },
-    {
-        nombre: "Departamento Desarrollo Artístico",
-        coords: [6.1978, -75.5792],
-        descripcion: "Departamento de artes"
-    }
-];
-
-// Agregar marcadores para cada lugar
-lugareseafit.forEach(lugar => {
-    L.marker(lugar.coords)
-        .addTo(map)
-        .bindPopup(`<b>${lugar.nombre}</b><br>${lugar.descripcion}`)
-        .on('click', function() {
-            // Al hacer clic en un marcador, centrar el mapa
-            map.setView(lugar.coords, 18);
-        });
-});
-
-// Función de búsqueda
-const searchInput = document.getElementById('searchInput');
-const searchResults = document.getElementById('searchResults');
-
-searchInput.addEventListener('input', function() {
-    const query = this.value.toLowerCase().trim();
-    
-    if (query.length < 2) {
-        searchResults.style.display = 'none';
-        return;
-    }
-    
-    // Filtrar lugares que coincidan con la búsqueda
-    const matches = lugareseafit.filter(lugar => 
-        lugar.nombre.toLowerCase().includes(query) ||
-        lugar.descripcion.toLowerCase().includes(query)
-    );
-    
-    if (matches.length > 0) {
-        searchResults.innerHTML = matches.map(lugar => 
-            `<div class="search-item" onclick="goToPlace(${lugar.coords[0]}, ${lugar.coords[1]}, '${lugar.nombre}')">
-                <strong>${lugar.nombre}</strong><br>
-                <small>${lugar.descripcion}</small>
-            </div>`
-        ).join('');
-        searchResults.style.display = 'block';
-    } else {
-        searchResults.innerHTML = '<div class="search-item">No se encontraron lugares</div>';
-        searchResults.style.display = 'block';
-    }
-});
-
-// Función para ir a un lugar específico
-function goToPlace(lat, lng, nombre) {
-    map.setView([lat, lng], 19);
-    searchResults.style.display = 'none';
-    searchInput.value = nombre;
-    
-    // Mostrar popup del lugar
-    L.popup()
-        .setLatLng([lat, lng])
-        .setContent(`<b>¡Estás aquí!</b><br>${nombre}`)
-        .openOn(map);
-}
-
-// Ocultar resultados al hacer clic fuera
-document.addEventListener('click', function(e) {
-    if (!e.target.closest('.search-container')) {
-        searchResults.style.display = 'none';
-    }
-});
-
-// Agregar control de ubicación (si el usuario permite geolocalización)
-map.locate({setView: false, maxZoom: 19});
-
-map.on('locationfound', function(e) {
-    L.marker(e.latlng)
-        .addTo(map)
-        .bindPopup('¡Tu ubicación actual!')
-        .openPopup();
-});
-</script>
+<!-- Pase el js fuera del archivo por lo jodidamente grande que era-->
+<script src="{% static 'js/home.js'%}"></script>
 {% endblock %}

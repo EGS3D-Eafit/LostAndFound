@@ -8,24 +8,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95cdc95e-44f4-4f80-8d0f-ce2d6ccba3cf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/location/management/commands/create_location_tensors.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/location/static/js/home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/LostAndFound.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/LostAndFound.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/location/management/commands/convert_to_tensor.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/location/management/commands/create_locations.py" beforeDir="false" afterPath="$PROJECT_DIR$/location/management/commands/create_locations.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/location/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/location/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/location/static/basic_imgs/biblioteca.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/location/static/locations_img/Biblioteca Luis Echavarria Villegas/1.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/location/static/basic_imgs/cafe.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/location/static/locations_img/Cafeteria Principal/1.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/location/static/locations_img/imagen.png" beforeDir="false" afterPath="$PROJECT_DIR$/location/static/locations_img/Bloque 39/1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/location/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/location/templates/home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/location/templates/welcome.html" beforeDir="false" afterPath="$PROJECT_DIR$/location/templates/welcome.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/location/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/location/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/location/static/js/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/location/static/js/home.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/location/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/location/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lostandfound/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/lostandfound/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +20,9 @@
   </component>
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -67,6 +56,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Django Server.LostAndFound.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "Python.create_location_tensors.executor": "Run",
     "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
@@ -108,6 +98,7 @@
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="lostandfound.settings" />
       </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -146,7 +137,9 @@
       <workItem from="1757002803036" duration="1554000" />
       <workItem from="1760462640664" duration="284000" />
       <workItem from="1760496955134" duration="103000" />
-      <workItem from="1760497125497" duration="3734000" />
+      <workItem from="1760497125497" duration="4018000" />
+      <workItem from="1760534026372" duration="1265000" />
+      <workItem from="1760535583372" duration="3434000" />
     </task>
     <servers />
   </component>

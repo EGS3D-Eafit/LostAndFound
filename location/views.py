@@ -150,7 +150,7 @@ def filter_view(request):
     lng = request.GET.get('lng')
 
     # Copiar lista base
-    results = DUMMY_PLACES.copy()
+    results = Location.objects.all()
 
     # Filtrar por categoría (si se seleccionó)
     if category:
@@ -254,14 +254,16 @@ def compare_imgs(request):
     max_coincidence_location = None
     max_coincidence_location_mean = 0
     for location in Location.objects.all():
+        if(location.location_tensors_imgs is None):
+            continue
         buffer = io.BytesIO(location.location_tensors_imgs)
         location_embs = torch.load(buffer)
         total = 0.0
         carry = 0.0
         for emb in location_embs:
-            usr_emb = usr_image_embedding.unsqueeze(0)
-            loc_emb = emb.unsqueeze(0)
-            cos = torch.nn.functional.cosine_similarity(usr_emb, loc_emb).item()
+            usr_emb = usr_image_embedding
+            loc_emb = emb
+            cos = torch.nn.functional.cosine_similarity(usr_emb, loc_emb, dim=1).item()
             carry += cos
             total += 1
         mean = carry / total

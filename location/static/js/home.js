@@ -102,6 +102,7 @@ document.getElementById('imageForm').addEventListener('submit', function(e) {
     const formData = new FormData();
     const imageFile = document.getElementById('imagen').files[0];
 
+
     if (!imageFile) {
        alert("Por favor selecciona una imagen.");
        return;
@@ -110,16 +111,17 @@ document.getElementById('imageForm').addEventListener('submit', function(e) {
     formData.append('image', imageFile);
 
     fetch('/location/api/compare-imgs/', {
-       method: 'POST',
-       body: formData,
-       headers: {
-         'X-CSRFToken': getCookie('csrftoken') // Necesario para Django
-       }
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-CSRFToken': getCookie('csrftoken') // Necesario para Django
+        }
     })
     .then(response => response.json())
     .then(data => {
-       lugar = data
-       goToPlace(lugar.coords[0], lugar.coords[1], lugar.nombre)
+        lugar = data[0];
+        console.log(lugar);
+        goToPlace(lugar.coords[0], lugar.coords[1], lugar.nombre);
     })
     .catch(error => {
         console.error('Error al enviar la imagen:', error);

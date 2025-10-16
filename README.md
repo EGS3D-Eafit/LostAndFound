@@ -1,5 +1,7 @@
 # Lost&Found
 
+## Lost&Found: Profesionally reuniting you with your forgetfulness
+
 🗺️Project Description
 
 New and visiting students at Universidad EAFIT often face difficulties navigating the campus, especially when they are unfamiliar with its buildings and layout. Getting lost not only wastes time but also generates stress, particularly when students need to arrive on time to classes or meetings.

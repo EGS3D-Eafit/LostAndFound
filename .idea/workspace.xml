@@ -5,12 +5,17 @@
   </component>
   <component name="BackendCodeEditorMiscSettings">
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
+    <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95cdc95e-44f4-4f80-8d0f-ce2d6ccba3cf" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/location/management/commands/create_locations.py" beforeDir="false" afterPath="$PROJECT_DIR$/location/management/commands/create_locations.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/location/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/location/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/location/static/js/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/location/static/js/home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/location/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/location/templates/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/location/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/location/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/location/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/location/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -54,33 +59,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Django Server.LostAndFound.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.create_location_tensors.executor": "Run",
-    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
-    "RunOnceActivity.RadMigrateCodeStyle": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "django.template.preview.state": "SHOW_EDITOR_AND_PREVIEW",
-    "git-widget-placeholder": "EGS3D-branch",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Davi/Eafit/Proyecto integrador/L&F/LostAndFound",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Django Server.LostAndFound.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.create_location_tensors.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR_AND_PREVIEW&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;EGS3D-branch&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Davi/Eafit/Proyecto integrador/L&amp;F/LostAndFound&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\DAVID\EAFIT\Proyecto Integrador 1\LostAndFound\location\static\js" />
@@ -139,21 +144,20 @@
       <workItem from="1760496955134" duration="103000" />
       <workItem from="1760497125497" duration="4018000" />
       <workItem from="1760534026372" duration="1265000" />
-      <workItem from="1760535583372" duration="3434000" />
+      <workItem from="1760535583372" duration="3496000" />
+      <workItem from="1760579910767" duration="2085000" />
+      <workItem from="1760805997307" duration="12000" />
+      <workItem from="1761672072515" duration="982000" />
+      <workItem from="1762220962490" duration="1658000" />
+      <workItem from="1762364661353" duration="891000" />
+      <workItem from="1762385387462" duration="3621000" />
+      <workItem from="1762626178275" duration="24703000" />
+      <workItem from="1762712598110" duration="20537000" />
+      <workItem from="1762798296943" duration="304000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/location/management/commands/create_locations.py</url>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

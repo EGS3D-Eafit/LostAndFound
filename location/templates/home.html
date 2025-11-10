@@ -44,10 +44,24 @@
 
 <div class="container">
     <div class="card mb-3 p-3">
-        <h4>¿A dónde te gustaría ir?</h4>
-        <div class="search-container">
-            <input type="text" id="searchInput" class="form-control mt-2" placeholder="Buscar lugar en EAFIT...">
-            <div id="searchResults" class="search-results"></div>
+        <h4 class="mb-3">¿A dónde te gustaría ir?</h4>
+        <div class="d-flex flex-row gap-3">
+            <div class="search-container flex-fill">
+                <p class="mb-0">Desde</p>
+                <div class="d-flex flex-row gap-3 h-75">
+                    <input type="text" id="fromInput" class="form-control mt-2" placeholder="Buscar lugar en EAFIT...">
+                    <button href="#" class="btn btn-primary mt-2 w-50" data-bs-toggle="modal" data-bs-target="#uploadModal" id="imageSearchFrom">¿Donde estoy?</button>
+                </div>
+                <div id="fromSearch" class="search-results"></div>
+            </div>
+            <div class="search-container flex-fill">
+                <p class="mb-0">Hasta</p>
+                <div class="d-flex flex-row gap-3 h-75">
+                    <input type="text" id="toInput" class="form-control mt-2" placeholder="Buscar lugar en EAFIT...">
+                    <button href="#" class="btn btn-primary mt-2 w-50" data-bs-toggle="modal" data-bs-target="#uploadModal" id="imageSearchTo">¿A Donde Voy?</button>
+                </div>
+                <div id="toSearch" class="search-results"></div>
+            </div>
         </div>
     </div>
     
@@ -63,7 +77,7 @@
           <form id="imageForm" enctype="multipart/form-data">
               {% csrf_token %}
             <div class="modal-header">
-              <h5 class="modal-title text-dark" id="uploadModalLabel">¡Sube una imagen y te encontramos!</h5>
+              <h5 class="modal-title text-dark" id="uploadModalLabel">¡Sube una imagen y te lo diremos!</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
             <div class="modal-body">
@@ -82,7 +96,6 @@
     </div>
     <!--Aqui termina-->
 
-    <button href="#" class="btn btn-primary w-100 mb-2" data-bs-toggle="modal" data-bs-target="#uploadModal">¿No sabes dondes estas?</button>
     <a href="{% url 'logout' %}" class="btn btn-danger w-100">Cerrar Sesión</a>
 </div>
 {% endblock %}

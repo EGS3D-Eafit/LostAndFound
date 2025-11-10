@@ -1,5 +1,7 @@
 import io
 import torch
+import heapq
+import json
 
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
@@ -18,6 +20,8 @@ from transformers import AutoImageProcessor, AutoModel
 
 import math
 
+
+locationsEafit = Location.objects.all()
 
 # Página de bienvenida con opciones: Sign Up / Log In / Visitor
 def welcome(request):
@@ -150,7 +154,7 @@ def filter_view(request):
     lng = request.GET.get('lng')
 
     # Copiar lista base
-    results = Location.objects.all()
+    results = locationsEafit
 
     # Filtrar por categoría (si se seleccionó)
     if category:
@@ -203,33 +207,11 @@ def filter_view(request):
 
 from django.shortcuts import render
 
-# Lugares de ejemplo
-LUGARES = [
-    {
-        "id": 1,
-        "nombre": "Parque de los Deseos",
-        "descripcion": "Un lugar ideal para descansar.",
-        "imagen": "lugares/parque.jpg"
-    },
-    {
-        "id": 2,
-        "nombre": "Café Central",
-        "descripcion": "El café más famoso del centro.",
-        "imagen": "lugares/cafe.jpg"
-    },
-    {
-        "id": 3,
-        "nombre": "Biblioteca EAFIT",
-        "descripcion": "Espacio académico y cultural.",
-        "imagen": "lugares/biblioteca.jpg"
-    },
-]
-
 def saved(request):
-    return render(request, "saved.html", {"lugares": LUGARES})
+    return render(request, "saved.html", {"lugares": locationsEafit})
 
 def saved_detail(request, lugar_id):
-    lugar = next((l for l in LUGARES if l["id"] == lugar_id), None)
+    lugar = next((l for l in locationsEafit if l["id"] == lugar_id), None)
     return render(request, "saved_detail.html", {"lugar": lugar})
 
 def createTensor(img):
@@ -253,7 +235,7 @@ def compare_imgs(request):
     usr_image_embedding = createTensor(usr_image)
     max_coincidence_location = None
     max_coincidence_location_mean = 0
-    for location in Location.objects.all():
+    for location in locationsEafit:
         if(location.location_tensors_imgs is None):
             continue
         buffer = io.BytesIO(location.location_tensors_imgs)
@@ -282,15 +264,70 @@ def compare_imgs(request):
     return JsonResponse(data, safe=False)
 
 
+def dijkstra(inicio_name, fin_name):
+    #diccionario para sacar rapido las locaciones
+    ubicaciones = {loc.name: loc for loc in locationsEafit}
+
+    heap = [(0, inicio_name, [inicio_name], [])]
+    visitados = set()
+
+    while heap:
+        distancia, actual_name, ruta, totalRoute = heapq.heappop(heap)
+
+        if actual_name in visitados:
+            continue
+        visitados.add(actual_name)
+
+        if actual_name == fin_name:
+            return [{
+                "ruta": ruta,
+                "distancia_total": distancia,
+                "ruta_total": totalRoute
+            }]
+
+        actual = ubicaciones.get(actual_name)
+        if not actual:
+            continue  # Si no se encuentra la ubicación, se omite
+
+        for connection in actual.connections:
+            vecino_name = connection[0]
+            dist = connection[1]
+            pasos = connection[2]
+
+            if vecino_name not in visitados:
+                heapq.heappush(heap, (
+                    distancia + dist,
+                    vecino_name,
+                    ruta + [vecino_name],
+                    totalRoute + pasos
+                ))
+
+    return None
+
+
+def calcular_ruta(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        try:
+            Location.objects.get(name=data["from"])
+            Location.objects.get(name=data["to"])
+        except Location.DoesNotExist:
+            return JsonResponse({"error": "Ubicación no encontrada"}, status=404)
+
+        resultado = dijkstra(data["from"], data["to"])
+        if resultado:
+            return JsonResponse(resultado, safe=False)
+        else:
+            return JsonResponse({"error": "No se encontró una ruta"}, status=404)
+
 
 def get_locations_json(request):
-    locations = Location.objects.all()
     data = [
         {
             'nombre': location.name,
             'descripcion': location.description,
             'coords': location.coordinates,
         }
-        for location in locations
+        for location in locationsEafit
     ]
     return JsonResponse(data, safe=False)

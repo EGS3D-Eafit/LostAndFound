@@ -331,3 +331,20 @@ def get_locations_json(request):
         for location in locationsEafit
     ]
     return JsonResponse(data, safe=False)
+
+def get_location_detail(request, nombre):
+    """API para obtener los detalles completos de una ubicación con conexiones"""
+    try:
+        location = Location.objects.get(name=nombre)
+        data = {
+            'nombre': location.name,
+            'descripcion': location.description,
+            'coords': location.coordinates,
+            'category': location.category,
+            'popularity': location.popularity,
+            'date': location.date,
+            'connections': location.connections,
+        }
+        return JsonResponse(data, safe=False)
+    except Location.DoesNotExist:
+        return JsonResponse({'error': 'Ubicación no encontrada'}, status=404)

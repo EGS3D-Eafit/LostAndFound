@@ -33,6 +33,51 @@
     .search-container {
         position: relative;
     }
+    /* Estilos para la explicaciom */
+    .map-legend {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        font-size: 13px;
+        line-height: 20px;
+        margin-bottom: 20px;
+        border-left: 4px solid #007bff;
+    }
+    .map-legend h5 {
+        margin: 0 0 12px 0;
+        font-weight: bold;
+        color: #333;
+        font-size: 14px;
+    }
+    .legend-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .legend-color {
+        width: 20px;
+        height: 3px;
+        margin-right: 12px;
+        border-radius: 2px;
+        flex-shrink: 0;
+    }
+    .legend-color.red {
+        background-color: #FF6B6B;
+        box-shadow: 0 0 4px rgba(255, 107, 107, 0.5);
+    }
+    .legend-color.green {
+        background-color: #00FF00;
+        height: 4px;
+        box-shadow: 0 0 4px rgba(0, 255, 0, 0.5);
+    }
+    .legend-item-text {
+        color: #555;
+        font-size: 12px;
+    }
+    .legend-item-text strong {
+        color: #333;
+    }
 </style>
 {% endblock %}
 
@@ -67,6 +112,29 @@
     
     <div class="card text-center mb-3 p-3">
         <h5>Mapa Interactivo de EAFIT</h5>
+        
+        <!-- Leyenda del mapa -->
+        <div class="map-legend">
+            <h5>Explicacion del Mapa</h5>
+            <div class="legend-item">
+                <div class="legend-color red"></div>
+                <span class="legend-item-text">
+                    <strong>Línea Roja Punteada:</strong> Conexiones disponibles desde el bloque que seleccionaste
+                </span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color green"></div>
+                <span class="legend-item-text">
+                    <strong>Línea Verde Sólida:</strong> Ruta recomendada cuando seleccionas dos bloques diferentes
+                </span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-item-text">
+                    📌 <strong>Marcador de Ubicación:</strong> Posición de cada bloque en el campus EAFIT
+                </span>
+            </div>
+        </div>
+        
         <div id="map"></div>
     </div>
 

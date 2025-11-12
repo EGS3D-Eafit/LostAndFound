@@ -12,6 +12,52 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 // Lugares exactos de EAFIT (coordenadas convertidas desde plus codes)
 
 let lugaresEafit = [];
+let capasConexiones = []; // Almacena todas las capas dibujadas de conexiones
+
+
+function limpiarConexiones() {
+    capasConexiones.forEach(capa => {
+        map.removeLayer(capa);
+    });
+    capasConexiones = [];
+}
+
+function dibujarConexionesDelBloque(nombreBloque) {
+    limpiarConexiones();
+    
+    // Obtener detalles del lugar con sus conexiones
+    fetch(`/location/api/lugar/${encodeURIComponent(nombreBloque)}/`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.connections && data.connections.length > 0) {
+                // Crear lista de conexiones para mostrar
+                let nombresConexiones = data.connections.map(conn => conn[0]).join('<br>');
+                
+                // Mostrar popup con las conexiones disponibles
+                L.popup()
+                    .setLatLng(data.coords)
+                    .setContent(`<b>${nombreBloque}</b><br><small style="color: #FF6B6B;">📍 Conexiones disponibles:</small><br>${nombresConexiones}`)
+                    .openOn(map);
+                
+                // Dibujar las líneas de conexión (punteadas en rojo)
+                data.connections.forEach(conexion => {
+                    let destino = conexion[0];
+                    let coordenadas = conexion[2]; // Ruta con waypoints
+                    
+                    // Dibujar línea punteada roja
+                    let linea = L.polyline(coordenadas, {
+                        color: '#FF6B6B',
+                        weight: 3,
+                        dashArray: '5, 5',
+                        opacity: 0.7
+                    }).addTo(map);
+                    
+                    capasConexiones.push(linea);
+                });
+            }
+        })
+        .catch(error => console.error('Error al obtener conexiones:', error));
+}
 
 
 fetch('/location/api/lugares/')
@@ -65,9 +111,10 @@ fromSearch.addEventListener('click', function (event) {
         if (lugar.nombre === nombreBuscado) {
             fromLocation = lugar;
             goToPlace(lugar.coords[0], lugar.coords[1], lugar.nombre, fromInput, fromSearch);
-            if(fromLocation != null && toLocation != null) {
-                calcRoute(fromLocation, toLocation);
-            }
+                dibujarConexionesDelBloque(nombreBuscado); // Mostrar conexiones
+                if(fromLocation != null && toLocation != null) {
+                    calcRoute(fromLocation, toLocation);
+                }
             break;
         }
     }
@@ -83,6 +130,7 @@ toSearch.addEventListener('click', function (event) {
         if (lugar.nombre === nombreBuscado) {
             toLocation = lugar;
             goToPlace(lugar.coords[0], lugar.coords[1], lugar.nombre, toInput, toSearch);
+            dibujarConexionesDelBloque(nombreBuscado); // Mostrar conexiones
             if(fromLocation != null && toLocation != null) {
                 calcRoute(fromLocation, toLocation);
             }
@@ -204,13 +252,21 @@ document.getElementById('imageForm').addEventListener('submit', function(e) {
 });
 
 function drawRoute(route) {
-    var polygon = L.polygon(route,
+    var polyline = L.polyline(route,
         {
-            color: 'blue',
+            color: '#00FF00',
             fillColor: '#0f0',
-            fillOpacity: 0.2
+            weight: 4,
+            opacity: 0.8
         }).addTo(map);
-    polygon.bindPopup("Ruta recomendada").openPopup();
+    
+    // Guardar la capa para poder limpiarla después si es necesario
+    let capaRuta = polyline;
+    polyline.bindPopup("✓ Ruta Recomendada").openPopup();
+    
+    // Opcional: Guardar la ruta para limpiarla después
+    if (!window.rutaActual) window.rutaActual = [];
+    window.rutaActual.push(capaRuta);
 }
 
 function calcRoute(from, to) {

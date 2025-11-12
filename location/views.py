@@ -191,7 +191,7 @@ def filter_view(request):
         results.sort(key=lambda x: parse_date(x.get('date','1970-01-01')), reverse=True)
 
     # Lista de categorías para el select (puedes mejorarla)
-    categories = sorted(list({p['category'] for p in DUMMY_PLACES}))
+    categories = sorted(list({p['category'] for p in locationsEafit}))
 
     context = {
         'places': results,

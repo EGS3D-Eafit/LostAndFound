@@ -5,41 +5,24 @@
     <h2 class="text-center mb-4">Lugares Guardados</h2>
 
     <div class="row">
-        <!-- Tarjeta 1 -->
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-lg rounded">
-                <img src="https://via.placeholder.com/400x200.png?text=Biblioteca+EAFIT" class="card-img-top" alt="Biblioteca EAFIT">
-                <div class="card-body">
-                    <h5 class="card-title">Biblioteca EAFIT</h5>
-                    <p class="card-text">Se encontró un portátil en la entrada principal.</p>
-                    <a href="#" class="btn btn-primary">Ver más</a>
+        {% if lugares and lugares|length > 0 %}
+            {% for lugar in lugares %}
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-lg rounded">
+                        <img src="https://via.placeholder.com/400x200.png?text={{ lugar.name|urlencode }}" class="card-img-top" alt="{{ lugar.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ lugar.name }}</h5>
+                            <p class="card-text">{{ lugar.description|default:"Sin descripción" }}</p>
+                            <a href="/saved/{{ lugar.id }}/" class="btn btn-primary">Ver más</a>
+                        </div>
+                    </div>
                 </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info">No tienes lugares guardados todavía. Añade algunos desde el mapa.</div>
             </div>
-        </div>
-
-        <!-- Tarjeta 2 -->
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-lg rounded">
-                <img src="https://via.placeholder.com/400x200.png?text=Cafetería+Central" class="card-img-top" alt="Cafetería Central">
-                <div class="card-body">
-                    <h5 class="card-title">Cafetería Central</h5>
-                    <p class="card-text">Cartera encontrada en una de las mesas.</p>
-                    <a href="#" class="btn btn-primary">Ver más</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tarjeta 3 -->
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-lg rounded">
-                <img src="https://via.placeholder.com/400x200.png?text=Bloque+19" class="card-img-top" alt="Bloque 19">
-                <div class="card-body">
-                    <h5 class="card-title">Bloque 19</h5>
-                    <p class="card-text">Se reportó una chaqueta olvidada en un salón.</p>
-                    <a href="#" class="btn btn-primary">Ver más</a>
-                </div>
-            </div>
-        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

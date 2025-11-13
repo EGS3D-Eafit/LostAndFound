@@ -11,6 +11,7 @@ from django.contrib import messages
 from datetime import datetime
 from PIL import Image
 
+from location.models import Favorite
 from location.models import Location
 
 # Aqui va a ir lo relacionado a la conversion de imagenes
@@ -89,10 +90,18 @@ def home(request):
 
 def calendar_view(request):
     return render(request, 'calendar.html')
-
 def saved_view(request):
-    return render(request, 'saved.html')
+    # Mostrar los favoritos del usuario autenticado o los guardados en sesión
+    lugares = []
+    if request.user.is_authenticated:
+        favs = Favorite.objects.filter(user=request.user).select_related('location')
+        lugares = [f.location for f in favs]
+    else:
+        # favoritos en sesión: lista de location ids
+        sess = request.session.get('favorites', [])
+        lugares = Location.objects.filter(id__in=sess)
 
+    return render(request, 'saved.html', {"lugares": lugares})
 def filter_view(request):
     return render(request, 'filter.html')
 
@@ -205,15 +214,76 @@ def filter_view(request):
     return render(request, 'filter.html', context)
 
 
-from django.shortcuts import render
-
-def saved(request):
-    return render(request, "saved.html", {"lugares": locationsEafit})
 
 def saved_detail(request, lugar_id):
-    lugar = next((l for l in locationsEafit if l["id"] == lugar_id), None)
+    try:
+        lugar = Location.objects.get(id=lugar_id)
+    except Location.DoesNotExist:
+        lugar = None
     return render(request, "saved_detail.html", {"lugar": lugar})
 
+def toggle_favorite(request):
+    """API para agregar/quitar favoritos.
+    Si el usuario está autenticado, se guarda en la tabla Favorite.
+    Si es visitante, se mantiene una lista en session['favorites'] con los ids.
+    Espera JSON: {"action":"add"|"remove","location_id": 12}
+    """
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+    try:
+        data = json.loads(request.body)
+        loc_id = int(data.get('location_id'))
+        action = data.get('action', 'add')
+    except Exception:
+        return JsonResponse({'error': 'Datos inválidos'}, status=400)
+
+    try:
+        loc = Location.objects.get(id=loc_id)
+    except Location.DoesNotExist:
+        return JsonResponse({'error': 'Ubicación no encontrada'}, status=404)
+
+    if request.user.is_authenticated:
+        if action == 'add':
+            fav, created = Favorite.objects.get_or_create(user=request.user, location=loc)
+            return JsonResponse({'status': 'added', 'location_id': loc_id})
+        else:
+            Favorite.objects.filter(user=request.user, location=loc).delete()
+            return JsonResponse({'status': 'removed', 'location_id': loc_id})
+    else:
+        sess = request.session.get('favorites', [])
+        if action == 'add':
+            if loc_id not in sess:
+                sess.append(loc_id)
+                request.session['favorites'] = sess
+            return JsonResponse({'status': 'added', 'location_id': loc_id})
+        else:
+            if loc_id in sess:
+                sess.remove(loc_id)
+                request.session['favorites'] = sess
+            return JsonResponse({'status': 'removed', 'location_id': loc_id})
+
+def get_favorites_api(request):
+    """API que devuelve la lista de favoritos del usuario (JSON)."""
+    lugares = []
+    if request.user.is_authenticated:
+        favs = Favorite.objects.filter(user=request.user).select_related('location')
+        lugares = [
+            {
+                'id': f.location.id,
+                'nombre': f.location.name,
+                'descripcion': f.location.description,
+                'coords': f.location.coordinates,
+            } for f in favs
+        ]
+    else:
+        sess = request.session.get('favorites', [])
+        qs = Location.objects.filter(id__in=sess)
+        lugares = [
+            {'id': l.id, 'nombre': l.name, 'descripcion': l.description, 'coords': l.coordinates}
+            for l in qs
+        ]
+    return JsonResponse(lugares, safe=False)
 def createTensor(img):
     model_ckpt = "nateraw/vit-base-beans"
     processor = AutoImageProcessor.from_pretrained(model_ckpt)
@@ -324,6 +394,7 @@ def calcular_ruta(request):
 def get_locations_json(request):
     data = [
         {
+            'id': location.id,
             'nombre': location.name,
             'descripcion': location.description,
             'coords': location.coordinates,

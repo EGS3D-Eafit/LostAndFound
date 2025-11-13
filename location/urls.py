@@ -8,4 +8,6 @@ urlpatterns = [
     path('api/lugar/<str:nombre>/', views.get_location_detail, name='location_detail'),
     path('api/compare-imgs/', views.compare_imgs, name='compare_imgs'),
     path('api/calcular-ruta/', views.calcular_ruta, name='calcular_ruta'),
+    path('api/favorite/', views.toggle_favorite, name='toggle_favorite'),
+    path('api/favorites/', views.get_favorites_api, name='get_favorites_api'),
 ]

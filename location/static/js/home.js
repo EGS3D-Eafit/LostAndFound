@@ -68,9 +68,16 @@ fetch('/location/api/lugares/')
         // Agregar marcadores al mapa
         lugaresEafit.forEach(lugar => {
             const coords = lugar.coords;
+            const popupHtml = `
+                <div>
+                    <strong>${lugar.nombre}</strong><br>
+                    <small>${lugar.descripcion || ''}</small><br>
+                    <button class="btn btn-sm btn-outline-primary mt-2" onclick="toggleFavorite(${lugar.id})">❤ Guardar</button>
+                </div>`;
+
             L.marker(coords)
                 .addTo(map)
-                .bindPopup(`<b>${lugar.nombre}</b><br>${lugar.descripcion}`)
+                .bindPopup(popupHtml)
                 .on('click', function() {
                     map.setView(coords, 18);
                 });
@@ -311,5 +318,30 @@ function getCookie(name) {
     }
   }
   return cookieValue;
+}
+
+function toggleFavorite(locationId) {
+    const payload = { location_id: locationId, action: 'add' };
+    fetch('/location/api/favorite/', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.status === 'added') {
+            alert('Guardado en favoritos');
+        } else if (data.status === 'removed') {
+            alert('Eliminado de favoritos');
+        } else {
+            console.log(data);
+        }
+    })
+    .catch(err => {
+        console.error('Error al togglear favorito', err);
+    });
 }
 

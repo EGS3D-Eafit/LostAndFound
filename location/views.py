@@ -2,6 +2,7 @@ import io
 import torch
 import heapq
 import json
+import logging
 
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
@@ -154,6 +155,7 @@ def haversine(lat1, lon1, lat2, lon2):
     a = math.sin(dphi/2)**2 + math.cos(phi1)*math.cos(phi2)*math.sin(dlambda/2)**2
     return 2 * R * math.asin(math.sqrt(a))
 
+
 def filter_view(request):
     # Parámetros GET
     q = request.GET.get('q', '').strip().lower()
@@ -162,18 +164,19 @@ def filter_view(request):
     lat = request.GET.get('lat')
     lng = request.GET.get('lng')
 
-    # Copiar lista base
-    results = locationsEafit
+    # Filtrar por categoría
+    results = []
+    for p in locationsEafit:
+        # Si no hay categoría seleccionada, incluir todo
+        # Si hay categoría, verificar si está en la lista de categorías del objeto
+        if not category or category.lower() in [c.lower() for c in p.category]:
+            results.append(p)
 
-    # Filtrar por categoría (si se seleccionó)
-    if category:
-        results = [p for p in results if p['category'].lower() == category.lower()]
-
-    # Filtrar por búsqueda de texto (título o descripción)
+    # Filtrar por búsqueda (name o description)
     if q:
-        results = [p for p in results if q in p['title'].lower() or q in p['description'].lower()]
+        results = [p for p in results if q in p.name.lower() or q in p.description.lower()]
 
-    # Si hay lat/lng y orden = nearby, calcular distancia y ordenar
+    # Calcular distancia si hay coordenadas
     user_coords = None
     if lat and lng:
         try:
@@ -181,36 +184,33 @@ def filter_view(request):
             user_lng = float(lng)
             user_coords = (user_lat, user_lng)
             for p in results:
-                p['distance_km'] = haversine(user_lat, user_lng, p['lat'], p['lng'])
+                # Asignar distancia como atributo dinámico
+                p.distance_km = haversine(user_lat, user_lng, p.lat, p.lng)
         except ValueError:
             user_coords = None
 
-    # Ordenar
+    # Ordenar resultados
     if order == 'popular':
-        results.sort(key=lambda x: x.get('popularity', 0), reverse=True)
+        results.sort(key=lambda p: getattr(p, 'popularity', 0), reverse=True)
     elif order == 'nearby' and user_coords:
-        results.sort(key=lambda x: x.get('distance_km', 9999))
+        results.sort(key=lambda p: getattr(p, 'distance_km', 9999))
     else:  # recent por defecto
-        # parse date; si falla, usa fecha mínima
-        def parse_date(d):
-            try:
-                return datetime.fromisoformat(d)
-            except Exception:
-                return datetime.min
-        results.sort(key=lambda x: parse_date(x.get('date','1970-01-01')), reverse=True)
+        results.sort(key=lambda p: getattr(p, 'date', datetime.min), reverse=True)
 
-    # Lista de categorías para el select (puedes mejorarla)
-    categories = sorted(list({p['category'] for p in locationsEafit}))
+    # Categorías únicas para el select
+    categories = sorted({c for p in locationsEafit for c in p.category})
 
+    # Contexto para la plantilla
     context = {
         'places': results,
         'categories': categories,
-        'q': request.GET.get('q',''),
+        'q': request.GET.get('q', ''),
         'selected_category': category,
         'selected_order': order,
         'user_lat': lat or '',
         'user_lng': lng or '',
     }
+
     return render(request, 'filter.html', context)
 
 

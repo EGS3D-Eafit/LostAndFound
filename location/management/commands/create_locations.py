@@ -27,7 +27,7 @@ class Command(BaseCommand):
         locations_EAFIT = [
             {
                 "name": "Bloque 38 - Rectoría",
-                "coordinates": [6.2016, -75.5785],
+                "coordinates": [6.20165, -75.57845],
                 "description": "Edificio administrativo principal",
                 "category": ["Administración"],
                 "popularity": 15,
@@ -39,7 +39,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Biblioteca Luis Echavarría Villegas",
-                "coordinates": [6.2011, -75.5784],
+                "coordinates": [6.2011, -75.5785],
                 "description": "Biblioteca principal de la universidad",
                 "category": ["Biblioteca"],
                 "popularity": 18,
@@ -65,7 +65,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Bloque 34",
-                "coordinates": [6.2011, -75.5795],
+                "coordinates": [6.2011, -75.5790],
                 "description": "Edificio académico",
                 "category": ["Académico"],
                 "popularity": 12,
@@ -77,7 +77,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Bloque 33",
-                "coordinates": [6.2009, -75.5800],
+                "coordinates": [6.2009, -75.5790],
                 "description": "Edificio académico",
                 "category": ["Académico"],
                 "popularity": 12,
@@ -89,7 +89,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Bloque 30",
-                "coordinates": [6.2006, -75.5805],
+                "coordinates": [6.2006, -75.5791],
                 "description": "Edificio académico",
                 "category": ["Académico"],
                 "popularity": 12,
@@ -101,7 +101,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Bloque 27",
-                "coordinates": [6.2003, -75.5810],
+                "coordinates": [6.2003, -75.57915],
                 "description": "Edificio académico",
                 "category": ["Académico"],
                 "popularity": 12,
@@ -125,7 +125,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Bloque 20",
-                "coordinates": [6.1988, -75.5789],
+                "coordinates": [6.19854, -75.5792],
                 "description": "Edificio académico",
                 "category": ["Académico"],
                 "popularity": 13,
@@ -140,7 +140,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Bloque 19 - Ingeniería",
-                "coordinates": [6.1986, -75.5797],
+                "coordinates": [6.1979, -75.57965],
                 "description": "Facultad de Ingeniería",
                 "category": ["Académico"],
                 "popularity": 16,
@@ -154,7 +154,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Bloque 17",
-                "coordinates": [6.1991, -75.5792],
+                "coordinates": [6.1991, -75.5789],
                 "description": "Edificio académico",
                 "category": ["Académico"],
                 "popularity": 12,
@@ -166,7 +166,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Bloque 14",
-                "coordinates": [6.1991, -75.5785],
+                "coordinates": [6.1985, -75.5789],
                 "description": "Edificio académico",
                 "category": ["Académico"],
                 "popularity": 12,
@@ -180,7 +180,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Bloque 15",
-                "coordinates": [6.1993, -75.5788],
+                "coordinates": [6.1987, -75.5789],
                 "description": "Edificio académico",
                 "category": ["Académico"],
                 "popularity": 12,
@@ -192,7 +192,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Bloque 16",
-                "coordinates": [6.1989, -75.5793],
+                "coordinates": [6.1989, -75.5789],
                 "description": "Edificio académico",
                 "category": ["Académico"],
                 "popularity": 12,
@@ -204,18 +204,18 @@ class Command(BaseCommand):
                     ["Piscina EAFIT - Bloque 4", [[6.1989, -75.5793], [6.1992, -75.5787], [6.1995, -75.5783], [6.1997, -75.5780]]]
                 ]
             },
-            {
-                "name": "Laboratorio del Café",
-                "coordinates": [6.1999, -75.5794],
-                "description": "Laboratorio del café EAFIT",
-                "category": ["Laboratorio"],
-                "popularity": 10,
-                "date": "2025-09-20",
-                "connections": [
-                    ["Bloque 26 - Administración", [[6.1999, -75.5794], [6.1999, -75.5804], [6.1999, -75.5815]]],
-                    ["Educación Continua", [[6.1999, -75.5794], [6.1996, -75.5797], [6.1994, -75.5800]]]
-                ]
-            },
+            #{
+            #    "name": "Laboratorio del Café",
+            #    "coordinates": [6.1999, -75.5794],
+            #    "description": "Laboratorio del café EAFIT",
+            #    "category": ["Laboratorio"],
+            #    "popularity": 10,
+            #    "date": "2025-09-20",
+            #    "connections": [
+            #        ["Bloque 26 - Administración", [[6.1999, -75.5794], [6.1999, -75.5804], [6.1999, -75.5815]]],
+            #        ["Educación Continua", [[6.1999, -75.5794], [6.1996, -75.5797], [6.1994, -75.5800]]]
+            #    ]
+            #},
             {
                 "name": "Educación Continua",
                 "coordinates": [6.1994, -75.5800],
@@ -320,7 +320,7 @@ class Command(BaseCommand):
                         popularity=location['popularity'],
                         date=location['date'],
                         connections=processed_connections,
-                        location_tensors_imgs=None,
+                        #location_tensors_imgs=None,
                     )
                     print(f"✓ Creada: {location['name']}")
                     if processed_connections:

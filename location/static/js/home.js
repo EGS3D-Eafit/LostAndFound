@@ -3,6 +3,7 @@ const eafitCoords = [6.2009, -75.5781];
 
 // Inicializar el mapa centrado en EAFIT
 var map = L.map('map').setView(eafitCoords, 17);
+var layer_ruta = L.layerGroup().addTo(map);
 
 // Agregar capa de mapa (OpenStreetMap)
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -259,21 +260,17 @@ document.getElementById('imageForm').addEventListener('submit', function(e) {
 });
 
 function drawRoute(route) {
+    layer_ruta.clearLayers();
     var polyline = L.polyline(route,
         {
             color: '#00FF00',
             fillColor: '#0f0',
             weight: 4,
             opacity: 0.8
-        }).addTo(map);
+        }).addTo(layer_ruta);
     
     // Guardar la capa para poder limpiarla después si es necesario
-    let capaRuta = polyline;
     polyline.bindPopup("✓ Ruta Recomendada").openPopup();
-    
-    // Opcional: Guardar la ruta para limpiarla después
-    if (!window.rutaActual) window.rutaActual = [];
-    window.rutaActual.push(capaRuta);
 }
 
 function calcRoute(from, to) {

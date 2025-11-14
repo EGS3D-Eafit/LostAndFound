@@ -106,46 +106,6 @@ def saved_view(request):
 def filter_view(request):
     return render(request, 'filter.html')
 
-# Datos dummy de ejemplo (puedes ajustar nombres, coords, popularidad y fecha)
-DUMMY_PLACES = [
-    {
-        "id": 1,
-        "title": "Biblioteca Luis Echavarría",
-        "category": "Parque/Biblioteca",
-        "description": "Libro encontrado cerca de la entrada principal.",
-        "lat": 6.2014, "lng": -75.5782,
-        "popularity": 12,
-        "date": "2025-09-20"
-    },
-    {
-        "id": 2,
-        "title": "Cafetería Central",
-        "category": "Cafetería",
-        "description": "Cartera encontrada en una de las mesas.",
-        "lat": 6.2009, "lng": -75.5787,
-        "popularity": 30,
-        "date": "2025-09-18"
-    },
-    {
-        "id": 3,
-        "title": "Bloque 19 - Ingeniería",
-        "category": "Edificio",
-        "description": "Chaqueta olvidada en el pasillo.",
-        "lat": 6.1986, "lng": -75.5797,
-        "popularity": 5,
-        "date": "2025-09-22"
-    },
-    {
-        "id": 4,
-        "title": "Piscina EAFIT - Bloque 4",
-        "category": "Deportes",
-        "description": "Gafas encontradas cerca de la piscina.",
-        "lat": 6.1997, "lng": -75.5785,
-        "popularity": 8,
-        "date": "2025-08-30"
-    },
-]
-
 def haversine(lat1, lon1, lat2, lon2):
     # distancia en kilómetros
     R = 6371
